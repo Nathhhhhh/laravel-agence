@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ContactRequestEvent;
 use App\Http\Requests\PropertyBookingMailRequest;
 use App\Http\Requests\SearchPropertiesRequest;
 use App\Mail\BookingProperty;
 use App\Models\Property;
+use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -29,8 +31,11 @@ class PropertyController extends Controller
         ]);
     }
 
-    public function sendMail(Property $property, PropertyBookingMailRequest $request) {
-        Mail::cc($request->input('email'))->send(new BookingProperty($property, $request->validated()));
+    public function sendMail(Property $property, PropertyBookingMailRequest $request, Dispatcher $dispatcher) {
+
+        $dispatcher->dispatch(new ContactRequestEvent($property, $request->validated()));
+
+//        Mail::cc($request->input('email'))->send(new BookingProperty($property, $request->validated()));
         return back()->with('success', 'Demande envoyée');
     }
 }
