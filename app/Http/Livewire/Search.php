@@ -6,6 +6,7 @@ use App\Http\Requests\SearchPropertiesRequest;
 use App\Models\Property;
 use Illuminate\Support\Collection;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Search extends Component
 {
@@ -14,6 +15,24 @@ class Search extends Component
     public $searchRooms;
     public $searchTitle;
 
+    use WithPagination;
+    public function updatingSearchSurface()
+    {
+        $this->resetPage();
+    }
+    public function updatingSearchPrice()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingSearchRooms()
+    {
+        $this->resetPage();
+    }
+    public function updatingSearchTitle()
+    {
+        $this->resetPage();
+    }
     public function render(SearchPropertiesRequest $request)
     {
         $query = Property::query()->with('options');
@@ -34,7 +53,7 @@ class Search extends Component
             $query = $query->where('title', 'ILIKE', '%'.$this->searchTitle.'%');
         }
 
-        $properties = $query->paginate(16);
+        $properties = $query->paginate(8);
 
         return view('livewire.search', [
             'properties' => $properties

@@ -62,6 +62,9 @@
         @endforelse
     </ul>
 
+    <div class="mt-10 mx-auto">
+        {{ $properties->links() }}
+    </div>
     <div wire:loading>
         <div class="text-center absolute top-2/4 left-2/4 -translate-x-2/4">
             <div role="status">

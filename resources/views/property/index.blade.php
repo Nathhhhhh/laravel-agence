@@ -7,8 +7,6 @@
 
             @livewire('search')
 
-        <div class="mt-10 mx-auto">
-            {{ $properties->links() }}
-        </div>
+
     </div>
 @endsection
