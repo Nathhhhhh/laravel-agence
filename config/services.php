@@ -31,6 +31,6 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
     'discord' => [
-        'token' => 'MTEzMzM3ODE2MjQ4NzczODQwOA.GzoqsW.n7-4Z5LDQrj4_3f-PC76oQerpG9tJMQvKvAk6Y'
+        'token' => env('DISCORD_KEY')
     ]
 ];
