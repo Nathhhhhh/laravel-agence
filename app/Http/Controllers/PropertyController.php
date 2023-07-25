@@ -7,9 +7,12 @@ use App\Http\Requests\PropertyBookingMailRequest;
 use App\Http\Requests\SearchPropertiesRequest;
 use App\Mail\BookingProperty;
 use App\Models\Property;
+use App\Models\User;
+use App\Notifications\ContactRequestNotification;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Notification;
 
 class PropertyController extends Controller
 {
@@ -33,8 +36,11 @@ class PropertyController extends Controller
 
     public function sendMail(Property $property, PropertyBookingMailRequest $request, Dispatcher $dispatcher) {
 
-        $dispatcher->dispatch(new ContactRequestEvent($property, $request->validated()));
-
+        /** @var User $user */
+        $user = User::find(1);
+        $user->notify(new ContactRequestNotification($property, $request->validated()));
+//        Notification::route('discord', 'https://discord.com/api/webhooks/*/*')->notify(new ContactRequestNotification($property, $request->validated()));
+//        $dispatcher->dispatch(new ContactRequestEvent($property, $request->validated()));
 //        Mail::cc($request->input('email'))->send(new BookingProperty($property, $request->validated()));
         return back()->with('success', 'Demande envoyée');
     }
